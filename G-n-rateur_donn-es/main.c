@@ -37,7 +37,7 @@ int main()
 {
     srand(time(NULL)); //initialisation du random
 
-    E e[echantillon]; //création du tableau de structure e de taille echantillon = 150
+    E e[echantillon]; //crÃ©ation du tableau de structure e de taille echantillon = 150
     int i;
 
     //remplissage du tableau de structures
@@ -61,14 +61,14 @@ void convert_to_csv(E *e)
 {
     printf("\nCreation du fichier csv en cours...\n");
 
-    //création du fichier csv
+    //crÃ©ation du fichier csv
     FILE *pointeur_csv;
     pointeur_csv=fopen("donnes_aleatoires.csv","w");
 
     //titre du fichier
-    fprintf(pointeur_csv,"Personne, Frequence, Heure, Minutes, Secondes");
+    fprintf(pointeur_csv,"Personne;Frequence;Heure;Minutes;Secondes");
 
-    //ajout des données de la structure au fichier
+    //ajout des donnÃ©es de la structure au fichier
     int j;
     for(j=0;j<echantillon;j++)
     {
