@@ -17,31 +17,33 @@ void ReadIR() {
   // Lecture du retour analogique du photo-transistor
   int IRval = analogRead(IR); // 0->0V - 1024->5V
 
-  //Si pulsation ET qu'il y a un écart de 100
+  //Si pulsation ET qu'il y a un écart de 250
   if ( (IRval >= 250 && IRval < 400) && (IRval > IRMemory ) && IRMemory < 250) {
-    pulseLED(); // Allumage LED
     pulse++; // Ajoute une pulsation
-  } else shutdownLED();
+  }
   IRMemory = IRval; // Sauvegarde la nouvelle valeur IR
 
   CalcPulse(); // Calcul du pouls
 }
 
-unsigned long LastCalc = 0; // Stock la dernière fois que l'action à été exécutée
+unsigned long LastSend = 0; // Stock la dernière fois que l'action à été exécutée
 void CalcPulse() {
+
   unsigned long MillisCalc = millis();//Temps écoulé en ms
 
-  //Lorsque 10sec sont passées
-  if (MillisCalc - LastCalc > 10000) {
-
+  //Toutes les 10 sec
+  if ( ( (MillisCalc - LastSend) % 10 ) == 0 ) {
+    int bpm = ( (pulse) * (60 / (MillisCalc - LastSend) )  );
     // Envoi au port série l'instant et le pouls
-    int bpm = ((pulse / 2) * 10 );
     sendSerial(millis() / 1000, bpm);
-
-    pulse = 0; // Remet le compteur de pulsation à 0
-
-    LastCalc = MillisCalc;// Sauvegarde la dernière exécution
   }
+
+  // Apres 1 minute
+  if ( (MillisCalc - LastSend) > 60100 ) {
+    pulse = 0; // Remet le compteur de pulsation à 0
+    LastSend = MillisCalc; // Sauvegarde la dernière exécution
+  }
+
 }
 
 void sendSerial(unsigned long _time, int _pulse) {
@@ -57,24 +59,28 @@ void sendSerial(unsigned long _time, int _pulse) {
 /////////////////////////////////////
 
 void pulseLED() {
-  // Allumage des LEDs en fonction du paramètre choisi
-  switch (mode) {
-    case 0 :
-      all();
-      break;
-    case 1:
-      one_two();
-      break;
-    case 2:
-      two_three();
-      break;
-    case 3:
-      chenille();
-      break;
-    case 4:
-      wave();
-      break;
+  int pulseMemory;
+  if (pulse != pulseMemory) {
+    // Allumage des LEDs en fonction du paramètre choisi
+    switch (mode) {
+      case 0 :
+        all();
+        break;
+      case 1:
+        one_two();
+        break;
+      case 2:
+        two_three();
+        break;
+      case 3:
+        chenille();
+        break;
+      case 4:
+        wave();
+        break;
+    }
   }
+  pulseMemory = pulse;
 }
 
 void shutdownLED() {
@@ -88,6 +94,11 @@ void shutdownLED() {
 void all() {
   for (int i = 0; i <= nLED; i++) {
     digitalWrite(i, HIGH);
+  }
+  
+  unsigned long timer = millis();
+  if ( (millis() - timer ) >= 1000 ) {
+    shutdownLED();
   }
 }
 

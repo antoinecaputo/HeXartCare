@@ -6,10 +6,8 @@ void setup() {
 
 void loop() {
 
-  /*int IRval = analogRead(IR);
-  Serial.print(IRval); // 0 - 1024
-  Serial.print("\n");*/
-  
   ReadIR();
 
+  pulseLED(); // Allumage LED
+  
 }
