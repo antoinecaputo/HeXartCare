@@ -6,6 +6,7 @@ void CalcPulse(void); // Calcul du pouls
 void sendSerial(unsigned long _time, int _pulse); // Envoi de l'instant et du pouls par port série
 
 void pulseLED(void); // Eclairage LED
+void shutdownLED(void);
 
 void all(void); // Allume toute les LEDs
 void one_two(void); // Allume une LED sur deux
