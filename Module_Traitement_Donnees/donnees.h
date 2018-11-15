@@ -5,31 +5,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_PERSONNES 300
+//nombre de lignes du csv (et taille max du tableau de structures)
+#define SIZE_INDEX 301
 
+//déclaration de la structure dans laquelle iront les données du csv
 typedef struct donnees_aleatoires
 {
-    char *personne_nb;
+    char personne_nb[20]; //valeur arbitraire de 20, estimée assez large pour contenir "Personne_#"
     int frequence_cardiaque;
-    int heure;
-    int minutes;
-    int secondes;
+    int temps_ms;
 }D;
 
-D donnees[301];
+//déclaration de la structure donnees de type D que nous allons utiliser
+D donnees[SIZE_INDEX];
 
-/*
-enum temps_max
-{
-    heure_max=23,
-    heure_min=0,
-    minute_max=60,
-    minute_min=0,
-    seconde_max=60,
-    seconde_min=0
-};
-*/
+//prototypes des fonctions
+void lire_csv(void);
 void nombre_lignes_csv(void);
-void donnees_vers_structures(void);
+void placer_dans_struct(void);
 
 #endif // DONNEES_H
