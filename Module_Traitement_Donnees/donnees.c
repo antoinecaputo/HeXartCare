@@ -1,92 +1,141 @@
 #include "donnees.h"
 
-//fonction pour lire le fichier et compter le nombre de lignes
-void nombre_lignes_csv(void)
+//fonction pour lire le fichier et l'afficher sur la console
+void lire_csv(void)
 {
-    //ouvrir le fichier
+    //déclaration du pointeur de fichier
     FILE* pointeur_csv=NULL;
+    //ouverture du fichier en lecture seule
+    pointeur_csv=fopen("donnees_aleatoires_v7.csv","r");
 
-    pointeur_csv=fopen("donnees_aleatoires_v6.csv","r"); //r pour "en lecture"
+    //déclaration et initialisation de lecture, un char de la taille du nombre de lignes maximum
+    char lecture[SIZE_INDEX]=" ";;
 
-    if(pointeur_csv==NULL) //v�rifie la pr�sence du fichier
+    printf("\nLecture du fichier csv en cours...\n\n");
+
+    //on vérifie que le fichier existe et qu'il est dans le même dossier que donnees.c
+    if(pointeur_csv==NULL)
     {
+        //affichage du message d'erreur
         printf("\nERREUR - Fichier inexistant ou corrompu.\n");
         exit(1);
     }
     else
     {
-        int lignes=1;
-        char ch;
-        while(!feof(pointeur_csv)) //feof cherche la fin du fichier
+        //affichage du contenu du fichier jusqu'à en atteindre la fin
+        while(fgets(lecture,SIZE_INDEX,pointeur_csv)!=NULL)
         {
-            ch=fgetc(pointeur_csv); //parcours le csv caract�re par caract�re
-            if(ch=='\n')
-            {
-                lignes++;
-            }
+            printf("%s",lecture);
         }
-        printf("\nLe fichier csv comporte %d lignes\n",lignes);
-
     }
+
+    printf("\n\nFin du fichier csv.\n");
+
+    //fermeture du fichier
     fclose(pointeur_csv);
     free(pointeur_csv);
 }
 
-//fonction pour �crire les donn�es du csv dans la structure D
-void donnees_vers_structures(void)
+//fonction pour lire le fichier et compter le nombre de lignes
+void nombre_lignes_csv(void)
 {
-    //ouverture du fichier csv
-    printf("\nOuverture du fichier csv...\n");
-
+    //déclaration du pointeur de fichier
     FILE* pointeur_csv=NULL;
-    int i=0;
-    pointeur_csv=fopen("donnees_aleatoires_v6.csv","r");
+    //ouvrerture du fichier
+    pointeur_csv=fopen("donnees_aleatoires_v7.csv","r");
 
-    if(pointeur_csv==NULL)
+    if(pointeur_csv==NULL) //vérifie la présence du fichier
     {
         printf("\nERREUR - Fichier inexistant ou corrompu.\n");
         exit(1);
     }
     else
     {
-        printf("\nRecuperation des donnees...\n");
-        /*
-        char *tmp[301];
-        char ligne[50];
+        //déclaration du compteur de ligne, initialisé à 1
+        int lignes=1;
+        //déclaration du char ch qui sera notre curseur dans le parcours du fichier caractère par caractère
+        char ch;
 
-        for(i=0;i<301;i++)
+        //parcours du fichier caractère par caractère pour compter précisément le nombre de sauts de lignes
+        while(!feof(pointeur_csv)) //=tant que le curseur ch n'a pas atteint la fin du fichier
         {
-            tmp[i]=fgets(ligne,50,pointeur_csv);
-            printf("%s",tmp[i]);
+            ch=fgetc(pointeur_csv); //parcours le csv caractère par caractère
+            if(ch=='\n')
+            {
+                lignes++; //on incrémente le compteur de lignes à chaque fois que ch trouve un saut de ligne
+            }
         }
-        */
-        i=0;
-        char *pointeur;
-        do
+
+        //affichage du résultat
+        printf("\nLe fichier csv comporte %d lignes\n",lignes);
+
+    }
+
+    //fermeture du fichier
+    fclose(pointeur_csv);
+    free(pointeur_csv);
+}
+
+//fonction pour écrire les données du csv dans la structure D
+void donnees_vers_structures(void)
+{
+    //déclaration du pointeur de fichier
+    FILE* pointeur_csv=NULL;
+
+    //ouverture du fichier csv en lecture seule
+    pointeur_csv=fopen("donnees_aleatoires_v7.csv","r");
+
+    int i=0;
+    if(pointeur_csv==NULL)
+    {
+        //affichage d'un message au cas où le fichier est inexistant
+        printf("\nERREUR - Fichier inexistant ou corrompu.\n");
+        exit(1);
+    }
+    else
+    {
+        printf("\nRecuperation des donnees en cours...\n");
+
+        //déclaration d'un char qui stockera le titre du fichier csv
+        char titre[256];
+
+        //déclaration d'un char qui stockera les strings contenus dans le csv avant de les transférer à la structure
+        char temp[20];
+
+        if(pointeur_csv==NULL)
         {
-            printf("\ntest\n");
-            printf("\n%d\n",i);
-            pointeur = strtok(tmp[i],";");
-            donnees[i].personne_nb=strdup(pointeur);
-            pointeur=strtok(NULL,";");
-            donnees[i].frequence_cardiaque=atoi(pointeur);
-            pointeur=strtok(NULL,";");
-            donnees[i].heure=atoi(pointeur);
-            pointeur=strtok(NULL,";");
-            donnees[i].minutes=atoi(pointeur);
-            pointeur=strtok(NULL,"\n");
-            donnees[i].secondes=atoi(pointeur);
-            pointeur=strtok(NULL,";");
-            printf("\n%s\nFrequence cardiaque : %d\nHeure %d:%d:%d\n",donnees[i].personne_nb,donnees[i].frequence_cardiaque, \
-                   donnees[i].heure,donnees[i].minutes,donnees[i].secondes);
-            i++;
-            printf("\n%d\n",i);
-        }while(i!=301);
+            //affichage d'un message au cas où le fichier est inexistant
+            printf("\nERREUR - Fichier inexistant ou corrompu.\n");
+            exit(1);
+        }
+        else
+        {
+            //on lit la première ligne du fichier pour en stocker le contenu dans titre[256]
+            fgets(titre,256,pointeur_csv);
+            //affichage du titre du csv ainsi récupéré
+            printf("\n%s\n",titre);
+
+            //lecture du csv et enregistrement des données dans la structure
+            for(i=0;i<SIZE_INDEX-1;i++) //-1 puisque nous avons évincé la première ligne
+            {
+                //on indique que les données sont séparées par des points virgules
+                fscanf(pointeur_csv,"%[^;];%d;%d\n",temp,&donnees[i].frequence_cardiaque,&donnees[i].temps_ms);
+                //transfert de temp à donnees.personne_nb, étant un string
+                strcpy(donnees[i].personne_nb,temp);
+            }
+        }
+
+        //affichage du contenu de la structure contenant les données du csv
+        for(i=0;i<SIZE_INDEX-1;i++)
+        {
+            printf("\n%s\nFrequence cardiaque : %d\tTemps : %d ms\n",donnees[i].personne_nb,donnees[i].frequence_cardiaque, \
+                   donnees[i].temps_ms);
+        }
 
         printf("\nLes donnees du fichier ont ete recuperees avec succes !\n");
     }
 
-    printf("\nFermeture du fichier csv\n");
+    //fermeture du fichier
     fclose(pointeur_csv);
     free(pointeur_csv);
 }
