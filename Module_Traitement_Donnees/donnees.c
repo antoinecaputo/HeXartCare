@@ -77,7 +77,7 @@ void nombre_lignes_csv(void)
 }
 
 //fonction pour écrire les données du csv dans la structure D
-void donnees_vers_structures(void)
+void placer_dans_struct(void)
 {
     //déclaration du pointeur de fichier
     FILE* pointeur_csv=NULL;
