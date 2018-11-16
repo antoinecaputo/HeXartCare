@@ -5,11 +5,15 @@
 int main()
 {
     int choix_csv,check=0;
+    int i, choix_action, choix_variable,choix_ordre_tri;
+    int *tableau;
+    tableau=malloc(sizeof(int)*SIZE_INDEX);
+
     do
     {
         printf("\nBienvenue.\nQue voulez-vous faire ?\n \
             0: Fermer le gestionnaire de .csv\n \
-            1: Lire le fichier .csv\n \
+            1: Afficher les donnees du fichier .csv\n \
             2: Afficher le nombre de lignes du fichier .csv\n \
             3: Transferer les données du .csv vers la structure de données\n");
         printf("\n   > ");
@@ -40,7 +44,6 @@ int main()
                 printf("\nErreur lors de la saisie, veuillez recommencer.\n");
                 break;
         }
-    }while(choix_csv!=0);
     /*
     int choix_traitement;
 
@@ -51,34 +54,48 @@ int main()
     */
 
     //exécution d'un tri par ordre croissant
-    printf("\nVoulez-vous faire un tri fusion des frequences cardiaques (0) ou par temps (ms) (1) ?\n");
-    scanf("%d",&choix);
-    transferer_tab_struct(tableau,choix,0);
-    tri_fusion(tableau,SIZE);
-    transferer_tab_struct(tableau,choix,1);
 
-    printf("\nLe tableau a ete trie par ordre croissant :\n");
-    if(choix==0)
-    {
-        printf("\n--------------------\n");
-        for(i=0;i<SIZE_INDEX;i++)
+
+        printf("\nVous pouvez traiter les donnees du .csv dans ce menu.\n");
+        printf("\nVoulez-vous :\n \
+               0: Quitter le programme\n \
+               1: Trier les donnees (par ordre croissant/decroissant)\n \
+               2: Rechercher des frequences cardiaques dans une plage de temps\n \
+               3: Afficher la frequence cardiaque minimum/maximum ?\n");
+        scanf("%d",&choix_action);
+        printf("\nVoulez-vous faire un tri fusion des frequences cardiaques (0) ou par temps (ms) (1) ?\n");
+        scanf("%d",&choix_variable);
+
+        printf("\n0: Tri par ordre croissant\n1: Tri par ordre decroissant\n");
+        scanf("%d",&choix_ordre_tri);
+
+        transferer_tab_struct(tableau,choix_variable,0);
+        tri_fusion(tableau,SIZE_INDEX,choix_ordre_tri);
+        transferer_tab_struct(tableau,choix_variable,1);
+
+        printf("\nLe tableau a ete trie par ordre croissant :\n");
+        if(choix_variable==0)
         {
-            printf(" %d /",donnees[i].frequence_cardiaque);
+            printf("\n--------------------\n");
+            for(i=0;i<SIZE_INDEX;i++)
+            {
+                printf(" %d /",donnees[i].frequence_cardiaque);
+            }
         }
-    }
-    else if (choix==1)
-    {
-        printf("\n--------------------\n");
-        for(i=0;i<SIZE_INDEX;i++)
+        else if (choix_variable==1)
         {
-            printf(" %d /",donnees[i].temps_ms);
+            printf("\n--------------------\n");
+            for(i=0;i<SIZE_INDEX;i++)
+            {
+                printf(" %d /",donnees[i].temps_ms);
+            }
         }
-    }
-    else
-    {
-        printf("\nSaisie incorrecte\n");
-        exit(-1);
-    }
+        else
+        {
+            printf("\nSaisie incorrecte\n");
+            exit(-1);
+        }
+    }while(choix_csv!=0 && choix_action!=0);
 
     printf("\n");
 
