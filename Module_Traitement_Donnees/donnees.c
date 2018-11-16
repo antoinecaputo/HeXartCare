@@ -1,5 +1,6 @@
 #include "donnees.h"
 
+
 //fonction pour lire le fichier et l'afficher sur la console
 void lire_csv(void)
 {
@@ -65,12 +66,8 @@ void nombre_lignes_csv(void)
                 lignes++; //on incrémente le compteur de lignes à chaque fois que ch trouve un saut de ligne
             }
         }
-
-        //affichage du résultat
-        printf("\nLe fichier csv comporte %d lignes\n",lignes);
-
+        printf("\nLe fichier csv comporte %d lignes\n",SIZE_INDEX);
     }
-
     //fermeture du fichier
     fclose(pointeur_csv);
     free(pointeur_csv);
@@ -113,7 +110,7 @@ void placer_dans_struct(void)
             //on lit la première ligne du fichier pour en stocker le contenu dans titre[256]
             fgets(titre,256,pointeur_csv);
             //affichage du titre du csv ainsi récupéré
-            printf("\n%s\n",titre);
+            printf("\nEn-tete du csv : %s\n",titre);
 
             //lecture du csv et enregistrement des données dans la structure
             for(i=0;i<SIZE_INDEX-1;i++) //-1 puisque nous avons évincé la première ligne
@@ -125,13 +122,14 @@ void placer_dans_struct(void)
             }
         }
 
+        /* testing purposes
         //affichage du contenu de la structure contenant les données du csv
         for(i=0;i<SIZE_INDEX-1;i++)
         {
             printf("\n%s\nFrequence cardiaque : %d\tTemps : %d ms\n",donnees[i].personne_nb,donnees[i].frequence_cardiaque, \
                    donnees[i].temps_ms);
         }
-
+        */
         printf("\nLes donnees du fichier ont ete recuperees avec succes !\n");
     }
 
