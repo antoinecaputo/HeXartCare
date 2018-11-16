@@ -11,14 +11,14 @@ void transferer_tab_struct(int* tableau,int choix,int ordre)
         case 0:
             if(ordre==0)
             {
-                for(i=0;i<SIZE;i++)
+                for(i=0;i<SIZE_INDEX;i++)
                 {
                     tableau[i]=donnees[i].frequence_cardiaque;
                 }
             }
             else
             {
-                for(i=0;i<SIZE;i++)
+                for(i=0;i<SIZE_INDEX;i++)
                 {
                     donnees[i].frequence_cardiaque=tableau[i];
                 }
@@ -27,14 +27,14 @@ void transferer_tab_struct(int* tableau,int choix,int ordre)
         case 1:
             if(ordre==0)
             {
-                for(i=0;i<SIZE;i++)
+                for(i=0;i<SIZE_INDEX;i++)
                 {
                     tableau[i]=donnees[i].temps_ms;
                 }
             }
             else
             {
-                for(i=0;i<SIZE;i++)
+                for(i=0;i<SIZE_INDEX;i++)
                 {
                     donnees[i].temps_ms=tableau[i];
                 }
@@ -43,9 +43,11 @@ void transferer_tab_struct(int* tableau,int choix,int ordre)
     }
 }
 
-//TRI FUSION DANS L'ORDRE CROISSANT
-void tri_fusion_croissant(int* a,int taille)
+//TRI FUSION
+void tri_fusion(int* a,int taille,int ordre_tri)
 {
+    //int tri_ordre 0: croissant | 1: décroissant
+
     int m=0;
     m=(taille/2); //initialisation du milieu
     int *L,*R; //déclaration des moitiés de tableau de t/a
@@ -69,13 +71,24 @@ void tri_fusion_croissant(int* a,int taille)
             R[i-m]=a[i];
         }
 
-        tri_fusion(L,m);
-        tri_fusion(R,taille-m);
-        fusionner(a,L,R,taille);
+        if(ordre_tri==0)
+        {
+            tri_fusion(L,m,ordre_tri);
+            tri_fusion(R,taille-m,ordre_tri);
+            fusionner_croissant(a,L,R,taille);
+        }
+        else
+        {
+            tri_fusion(L,m,ordre_tri);
+            tri_fusion(R,taille-m,ordre_tri);
+            fusionner_decroissant(a,L,R,taille);
+        }
+
     }
 
 }
 
+//ORDRE CROISSANT
 void fusionner_croissant(int *a,int *L,int *R, int taille)
 {
     int i=0,j=0,k=0; //index des tableaux t/a, L et R
@@ -108,7 +121,42 @@ void fusionner_croissant(int *a,int *L,int *R, int taille)
         k++;
     }
 }
-//FIN TRI FUSION ORDRE CROISSANT
+
+//ORDRE DECROISSANT
+void fusionner_decroissant(int *a,int *L,int *R, int taille)
+{
+    int i=0,j=0,k=0; //index des tableaux t/a, L et R
+    int mL,mR;
+    mL=taille/2;
+    mR=taille-mL;
+
+    while(i<mL && j<mR)
+    {
+        if(L[i]<R[j])
+        {
+            a[k]=R[j];
+            j++;
+        }
+        else
+        {
+            a[k]=L[i];
+            i++;
+        }
+        k++;
+    }
+    for(;j<mR;j++)
+    {
+        a[k]=R[j];
+        k++;
+    }
+    for(;i<mL;i++)
+    {
+        a[k]=L[i];
+        k++;
+    }
+}
+//FIN TRI FUSION
+
 
 /*
 void recherche(D)
