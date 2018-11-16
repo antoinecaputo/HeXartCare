@@ -1,1 +1,3 @@
 Ce programme génère un csv de données aléatoires, afin de les tester dans le module 4: lecture et traitement de données.
+
+Il s'agit ici d'une simulation de pouls d'un adulte au repos, mais changer les paramètres du main.c permet d'obtenir des simulations d'autres âges.
