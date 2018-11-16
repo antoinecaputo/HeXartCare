@@ -1,5 +1,47 @@
 #include "actions.h"
 
+//fonction qui calcule la moyenne des pouls
+float calcul_moyenne_pouls(void)
+{
+    int i,somme;
+    float moyenne;
+    for(i=0;i<SIZE_INDEX;i++)
+    {
+        somme+=donnees[i].frequence_cardiaque;
+    }
+    moyenne=somme/SIZE_INDEX;
+    return moyenne;
+}
+
+//fonction qui affiche le minimum et le maximum des pouls
+void min_et_max(void)
+{
+    int i,j,mini,maxi;
+    mini = donnees[0].frequence_cardiaque;
+    maxi = donnees[0].frequence_cardiaque;
+    for(i=0;i<SIZE_INDEX;i++)
+    {
+        if (mini>donnees[i].frequence_cardiaque)
+        {
+            mini = donnees[i].frequence_cardiaque;
+            i++;
+        }
+    }
+    for(j=0;j<SIZE_INDEX;j++)
+    {
+        if (maxi<donnees[i].frequence_cardiaque)
+        {
+            maxi = donnees[j].frequence_cardiaque;
+            j++;
+        }
+    }
+
+    printf("\nLa valeure minimale est %d\n",mini);
+    printf("\nLa valeure maximale est %d\n",maxi);
+
+    printf("\n");
+}
+
 //fonction qui va inverser le contenu du tableau tableau avec le contenu du paramètre de struct et inversement
 void transferer_tab_struct(int* tableau,int choix,int ordre)
 {
@@ -158,9 +200,17 @@ void fusionner_decroissant(int *a,int *L,int *R, int taille)
 //FIN TRI FUSION
 
 
-/*
-void recherche(D)
+//RECHERCHE LINEAIRE
+int recherche_lineaire(int curseur)
 {
-    //insérer code...
+    int i;
+	for (i = 0; i < SIZE_INDEX; i++)
+    {
+		if (donnees[i].temps_ms == curseur)
+        {
+            return i;
+        }
+    }
+    return -1;
 }
-*/
+//FIN RECHERCHE LINEAIRE
