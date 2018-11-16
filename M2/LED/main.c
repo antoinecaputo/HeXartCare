@@ -3,6 +3,9 @@
 
 int main()
 {
+    menuLED();
+    
     creation_param_h();
+    
     return 0;
 }
