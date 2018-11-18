@@ -13,6 +13,8 @@ void creation_param_h(void)
     fprintf(parametre_ptr,"byte nLED = 9; //Nombre de LED\n"); //ligne 3
     fprintf(parametre_ptr,"\n/* MODE D'ECLAIRAGE DES LEDS\n0 : All\n1 : Une sur deux\
             \n3 : Chenille\n4 : Vague\n*/"); //ligne 4
+            
+    fclose(parametre_ptr); // Ferme le flux
 
 }
 
