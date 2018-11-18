@@ -1,15 +1,14 @@
 #include "menuLED.h"
 void menuLED ()
 {
-    FILE *fichier
-    printf("-------------MENU LED---------------\n");
-    fichier=fopen("param.h","w+")
-    fprint(fichier,"")
+	
     /*
-    on va reecrire a chaque fois celon le choix e l'utilisateur le param.f pour changer le mode
+    on va reecrire a chaque fois selon le choix de l'utilisateur le param.h pour changer le mode
     */
+	
+    printf("-------------MENU LED---------------\n");
 
-    printf("0 : All");
+    	printf("0 : All");
 	printf("1 : Une sur deux");
 	printf("2 : Deux sur trois");
 	printf ("3 : Chenille" );
